@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jerdos-s <jerdos-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 17:45:14 by jerdos-s          #+#    #+#             */
-/*   Updated: 2022/08/11 17:50:06 by jerdos-s         ###   ########.fr       */
+/*   Updated: 2022/08/11 17:57:51 by jerdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,19 +93,19 @@ char	*ft_init_new_buff(char *buff)
 
 char	*get_next_line(int fd)
 {
-	static char	*current_buff;
+	static char	*current_buff[4096];
 	char		*current_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!ft_read_from_buff(&current_buff, fd))
+	if (!ft_read_from_buff(&current_buff[fd], fd))
 	{
-		free(current_buff);
+		free(current_buff[fd]);
 		return (NULL);
 	}
-	current_line = ft_get_line(current_buff);
+	current_line = ft_get_line(current_buff[fd]);
 	if (!current_line)
 		return (NULL);
-	current_buff = ft_init_new_buff(current_buff);
+	current_buff[fd] = ft_init_new_buff(current_buff[fd]);
 	return (current_line);
 }
