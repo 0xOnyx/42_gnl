@@ -6,7 +6,7 @@
 /*   By: jerdos-s <jerdos-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 17:45:14 by jerdos-s          #+#    #+#             */
-/*   Updated: 2022/08/11 14:26:39 by jerdos-s         ###   ########.fr       */
+/*   Updated: 2022/08/11 15:38:07 by jerdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(char const *str)
 	size_t	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i] != '\0')
 		i++;
 	return (i);
@@ -31,6 +33,8 @@ size_t	ft_strlcat(char	*dst, const char *src, size_t size)
 	i = 0;
 	while (len < size && dst[len] != '\0')
 		len++;
+	if (!src)
+		return (len);
 	while (len + i + 1 < size && src[i] != '\0')
 	{
 		dst[len + i] = src[i];
@@ -53,10 +57,10 @@ int	ft_read_from_buff(char **current_buff, int fd)
 	if (!buff)
 		return (0);
 	res = *current_buff;
-	while (ft_strchr(res, '\n') || len <= 0)
+	while (!ft_strchr(res, '\n') || len <= 0)
 	{
 		len = read(fd, buff, BUFFER_SIZE);
-		if (len < 0)
+		if (len <= 0)
 		{
 			free(buff);
 			return (0);
@@ -66,6 +70,7 @@ int	ft_read_from_buff(char **current_buff, int fd)
 		free(*current_buff);
 		*current_buff = res;
 	}
+	free(buff);
 	return (1);
 }
 
@@ -102,7 +107,31 @@ char	*get_next_line(int fd)
 	if (!current_line)
 		return (NULL);
 	current_buff = ft_init_new_buff(current_buff);
-	if (current_buff)
+	if (!current_buff)
 		return (NULL);
 	return (current_line);
+}
+
+
+
+#include <fcntl.h>
+#include <stdio.h>
+
+int	main(void)
+{
+	int	fd;
+	char	*line;
+	int i;
+
+	fd = open("./test.txt", O_RDONLY);
+	if (fd < 0)
+		return (1);
+
+	line = get_next_line(fd);
+	i = 0;
+	while(line)
+	{
+		printf("iteration => %d value => %s\n", i++, line);
+		line = get_next_line(fd);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: jerdos-s <jerdos-s@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 20:22:33 by jerdos-s          #+#    #+#             */
-/*   Updated: 2022/08/11 14:34:58 by jerdos-s         ###   ########.fr       */
+/*   Updated: 2022/08/11 15:32:41 by jerdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ char	*ft_strchr(const char *s, int c)
 	char	*current;
 
 	current = (char *)s;
+	if(!current)
+		return (NULL);
 	while (*current != (char)c)
 	{
 		if (*current == '\0')
@@ -91,7 +93,7 @@ char	*ft_get_line(char *buff)
 		end = ft_strchr(buff, '\0');
 	if (!end)
 		return (end);
-	len = buff - end;
+	len = end - buff + 1;
 	res = ft_substr((char const *)buff, len);
 	return (res);
 }
