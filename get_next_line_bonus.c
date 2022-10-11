@@ -53,8 +53,7 @@ int	ft_read_from_buff(char **current_buff, int fd)
 	char	*buff;
 	int		len;
 
-	buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buff)
+	buff = (char *)malloc(sizeof(char) * (BzUFFER_SIZE
 		return (0);
 	res = *current_buff;
 	while (!ft_strchr(res, '\n'))
@@ -101,6 +100,7 @@ char	*get_next_line(int fd)
 	if (!ft_read_from_buff(&current_buff[fd], fd))
 	{
 		free(current_buff[fd]);
+		current_buff[fd] = NULL;
 		return (NULL);
 	}
 	current_line = ft_get_line(current_buff[fd]);

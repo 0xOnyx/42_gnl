@@ -101,6 +101,7 @@ char	*get_next_line(int fd)
 	if (!ft_read_from_buff(&current_buff, fd))
 	{
 		free(current_buff);
+		current_buff = NULL;
 		return (NULL);
 	}
 	current_line = ft_get_line(current_buff);
